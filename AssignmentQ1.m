@@ -4,31 +4,6 @@ close all
 clear all
 clc
 
-%% PART 1
-Vo=11.4;
-R = 89.17 ; % [m] Rotor radius
-lambda=8;
-rho = 1.225 ; % [kg/m3] air mass density
-A=pi*R^2;
-omega=linspace(0,3,100);
-Tetha_pitch=0;
-P_rated=10.64*10^6;
-Cp=P_rated./(0.5.*rho.*Vo.^3.*A);
-M_G=0.5*rho*A*R^3*Cp^3*omega.^2./lambda^3;
-P=M_G.*omega;
-for i=1:length(P)
-    if P(i)>P_rated
-        P(i)=P_rated
-    end
-end
-M_G=P./omega;
-
-figure(1)
-plot(omega,M_G)
-
-figure(2)
-plot(omega,P)
-
 %% Read Blade and airfoil Data %%
 global blade_data
 blade_data = xlsread('Blade_data') ;
@@ -47,12 +22,13 @@ H = 119 ; % hub height (m)
 Ls = 7.1 ; % m
 R = 89.17 ; % [m] Rotor radius
 B = 3 ; % Number of blades
-Pr = 10000*10^3 ; % [W] Rated Power
+Pr = 10000*10^3 ; % [W] Rated Power
 Vcut_in = 4 ; % [m/s] Cut in speed
 Vcut_out = 25 ; % [m/s] Cut out speed
+V_0 = 7 ; % [m/s] Constant wind speed
+lambda=8;
+omega = lambda*V_0/R ; % [rad/s] Constant rotational speed
 
-omega = 0.673 ; % [rad/s] Constant rotational speed
-V_0 = 8 ; % [m/s] Constant wind speed
 rho = 1.225 ; % [kg/m3] air mass density
 k_emp = 0.6 ; % empirical value used to calculate W_intermediate
 
@@ -188,12 +164,6 @@ for i=2:N
             dm(k) = blade_data(k)*py(k) ;
             dP(k) = omega*dm(k) ;
             
-            % W_qs(i) = Wz_qs(i) + Wy_qs(i)
-            % tau1 = (1.1/(1-1.3*a))*(R/V_0)
-            % tau2 = (0.39-0.26*(r/R)^2)*tau1
-            % H = W_qs(i)+k_emp*tau1*(((W_qs(i)-W_qs(i-1)/delta_t)
-            % Wint(i) = H + (Wint(i-1)-H)*exp(-delta_t/tau1)
-            % W(i) = Wint(i) + (W(i-1)-Wint(i))*exp(-delta_t/tau2)
             
         end
         pz(N_element) = 0 ;
@@ -233,7 +203,26 @@ plot(blade_data(:,1), real(py))
 xlabel('Element position [m]', 'interpreter','latex', 'FontSize', 12)
 ylabel('Tangential load [N]', 'interpreter','latex', 'FontSize', 12)
 ylim([-200 700])
-global pt 
-eps=0.01;
-P = p_compute(blade_data(:,1), blade_data(:,2), blade_data(:,3), eps);
+%global pt 
+%eps=0.01;
+%P = p_compute(blade_data(:,1), blade_data(:,2), blade_data(:,3), eps);
 
+%% Part 1
+A=pi*R^2;
+Cp=Power_cum/(0.5*rho*V_0^3*A);
+omega=linspace(0,3,100);
+M_G=0.5*rho*A*R^3*Cp.*omega.^2./lambda^3;
+P=M_G.*omega;
+P_rated=10.64*10^6;
+for i=1:length(P)
+    if P(i)>P_rated
+        P(i)=P_rated;
+        M_G(i)=P(i)/omega(i);
+    end
+end
+% 
+figure(1)
+plot(omega,M_G)
+
+figure(2)
+plot(omega,P)

@@ -4,6 +4,31 @@ close all
 clear all
 clc
 
+%% PART 1
+Vo=11.4;
+R = 89.17 ; % [m] Rotor radius
+lambda=8;
+rho = 1.225 ; % [kg/m3] air mass density
+A=pi*R^2;
+omega=linspace(0,1.5,100);
+Tetha_pitch=0;
+P_rated=10.64*10^6;
+Cp=P_rated./(0.5.*rho.*Vo.^3.*A);
+M_G=0.5*rho*A*R^3*Cp^3*omega.^2./lambda^3;
+P=M_G.*omega;
+for i=1:length(P)
+    if P(i)>P_rated
+        P(i)=P_rated
+    end
+end
+M_G=P./omega;
+
+figure(1)
+plot(omega,M_G)
+
+figure(2)
+plot(omega,P)
+
 %% Read Blade and airfoil Data %%
 global blade_data
 blade_data = xlsread('Blade_data') ;

@@ -38,7 +38,7 @@ Theta_yaw = 0 ; % [rad]
 
 %% Question 1
 % Optimum generator characteristic
-global M_G omega_list
+global M_G omega_list pz_TS
 V_0 = 7 ; % [m/s] Constant wind speed
 lambda=8;
 omega = lambda*V_0/R ; % [rad/s] Constant rotational speed
@@ -69,13 +69,13 @@ plot(omega_list,P)
 
 %% Integral control
 % Show that the steady result for a constant wind of 7 m/s (below rated) ends in ?=8 and ?p=0°
-Kp=1.5;
-Ki=0.64;
+Kp=0.64;
+Ki=1.5;
 Kk=deg2rad(14); 
 Irotor=1.6*10^8; %kg.m²
 
 omega0=1;
-Theta_pitch0=deg2rad(40);
+Theta_pitch0=deg2rad(0);
 
 %/!\ every angles have to be in rad, except in blade_data
 [thrust, Power, Maero, omega, Theta_pitch, time, MG]=unsteadyBEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
@@ -124,3 +124,26 @@ figure;
 plot(time, omega)
 xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
 ylabel('$\omega$','interpreter','latex',  'FontSize', 12)
+
+%% Question 3
+V_0=7;
+[thrust, Power, Maero, omega, Theta_pitch, time, MG]=TURB_BEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
+
+%% plots
+
+figure;
+plot(time(1:end-1), Power)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Power $[W]$','interpreter','latex',  'FontSize', 12)
+
+figure; 
+plot(time, radtodeg(Theta_pitch))
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Theta pitch $[º]$','interpreter','latex',  'FontSize', 12)
+
+figure;
+plot(time, omega)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('$\omega$','interpreter','latex',  'FontSize', 12)
+
+

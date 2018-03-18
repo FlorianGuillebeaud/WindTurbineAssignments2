@@ -70,8 +70,8 @@ plot(omega_list,P)
 %% Question 2
 %% Show that the steady result for a constant wind of 7 m/s (below rated) ends in ?=8 and ?p=0°
 
-Kp=1.5;
-Ki=0.64;
+Kp=0.64;
+Ki=1.5;
 Kk=deg2rad(14); 
 Irotor=1.6*10^8; %kg.m²
 

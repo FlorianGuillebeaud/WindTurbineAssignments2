@@ -69,8 +69,8 @@ plot(omega_list,P)
 
 %% Integral control
 % Show that the steady result for a constant wind of 7 m/s (below rated) ends in ?=8 and ?p=0°
-Kp=0.64;
-Ki=1.5;
+Kp=1.5;
+Ki=0.64;
 Kk=deg2rad(14); 
 Irotor=1.6*10^8; %kg.m²
 

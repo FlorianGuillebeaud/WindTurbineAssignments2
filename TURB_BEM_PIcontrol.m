@@ -1,6 +1,16 @@
 function [Thrust, Power, Maero, omega, Theta_pitch, time,u_turb9]=TURB_BEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor)
 %% Read the binary files
-fid1=fopen('sim1.bin'); % (fluctuating u component)
+% WE NEED TO HAVE DIFFERENT FILES FOR EACH VELOCITY
+if V_0==15
+    fid1=fopen('sim1.bin');% (fluctuating u component)
+elseif V_0==7
+    fid1=fopen('sim1.bin');
+elseif V_0==8
+    fid1=fopen('sim1.bin');
+else
+    fprintf('No file for this wind velocity \n')
+end
+
 % fid2=fopen('sim2.bin'); % (fluctuating v component)
 % fid3=fopen('sim3.bin'); % (fluctuating w component)
 global u
@@ -76,7 +86,7 @@ Theta_wing2(1) = Theta_wing1(1) + 2*pi/3 ; % blade 2
 Theta_wing3(1) = Theta_wing1(1) + 4*pi/3 ; % blade 3
 
     %% Loop
-for i=2:N
+for i=2:n1
 
     time(i) = time(i-1) + delta_t ;
     Theta_wing1(i) = Theta_wing1(i-1) + omega(i-1)*delta_t ; % blade 1

@@ -98,8 +98,45 @@ plot(time, omega)
 xlabel('time $[s]$','interpreter','latex',  'FontSize', 20)
 ylabel('$\omega$','interpreter','latex',  'FontSize', 20)
 
+%% Calculate the pitch angle to achieve P_rated and V_0=15m/s
+V_0=15;
+[thrust, Power, Maero, omega, Theta_pitch, time]=unsteadyBEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
 
+%% plots
+figure;
+plot(time(1:end-1), Power)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Power $[W]$','interpreter','latex',  'FontSize', 12)
 
+figure; 
+plot(time, radtodeg(Theta_pitch))
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Theta pitch $[º]$','interpreter','latex',  'FontSize', 12)
+
+figure;
+plot(time, omega)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('$\omega$','interpreter','latex',  'FontSize', 12)
+%% Question 3
+V_0=7;
+[thrust, Power, Maero, omega, Theta_pitch, time, u_turb9]=TURB_BEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
+
+%% plots
+
+figure;
+plot(time(1:end-1), Power)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Power $[W]$','interpreter','latex',  'FontSize', 12)
+
+figure; 
+plot(time, radtodeg(Theta_pitch))
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Theta pitch $[º]$','interpreter','latex',  'FontSize', 12)
+
+figure;
+plot(time, omega)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('$\omega$','interpreter','latex',  'FontSize', 12)
 
 
 

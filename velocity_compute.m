@@ -1,8 +1,8 @@
 %% Compute the relative wind velocity in Coordinate system 4 in y and z direction %%
 
-function [Vrel_y, Vrel_z] = velocity_compute(j, r, H, Ls, Wy, Wz, Theta_wing1, Theta_wing2, Theta_wing3 )
+function [Vrel_y, Vrel_z] = velocity_compute(j, r, H, Ls, Wy, Wz, Theta_wing1, Theta_wing2, Theta_wing3, omega,V_0, Theta_cone )
         
-global a_12 a_21 a_34 V_0 omega Theta_cone
+global a_12 a_21 a_34
         rt = [H 0 0] ; 
         rs = a_21*[0 0 -Ls]' ;
         

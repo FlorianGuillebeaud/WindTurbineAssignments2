@@ -7,7 +7,7 @@ global u Mx My
 ut=zeros(32,32);
 for i=1:32
     for j=1:32
-        ut(i,j)=u(time,i,j);
+        ut(i,j)=u(mod(time,1000)+1,i,j);
     end
 end
 

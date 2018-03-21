@@ -40,18 +40,23 @@ N = 1000 ; % [s]
 %% Question 1
 %% Optimum generator characteristic
 global M_G omega_list
-V_0 = 7 ; % [m/s] Constant wind speed
+A=pi*R^2;
+
 lambda=8;
+
+
+V_0 = 7 ; % [m/s] Constant wind speed
 omega = lambda*V_0/R ; % [rad/s] Constant rotational speed
 
 %[~, Power, ~,~]=unsteadyBEM(H, Ls, R, B, omega, V_0, rho, delta_t, N, N_element, Theta_pitch, Theta_cone, Theta_tilt, Theta_yaw);
 
-A=pi*R^2;
-%Cp=Power(end)/(0.5*rho*V_0^3*A);
-Cp=0.4316;
+
+%Cp7=Power(end)/(0.5*rho*V_0^3*A);
+Cp7=0.4316;
+
 
 omega_list=linspace(0,3,100);
-M_G=0.5*rho*A*R^3*Cp.*omega_list.^2./lambda^3;
+M_G=0.5*rho*A*R^3*Cp7.*omega_list.^2./lambda^3;
 P=M_G.*omega_list;
 P_rated=10.64*10^6;
 for i=1:length(P)
@@ -75,8 +80,8 @@ Ki=0.64;
 Kk=deg2rad(14); 
 Irotor=1.6*10^8; %kg.m²
 
-omega0=1;
-Theta_pitch0=deg2rad(40);
+omega0=0.7;
+Theta_pitch0=deg2rad(25);
 
 %/!\ every angles have to be in rad, except in blade_data
 [thrust, Power, Maero, omega, Theta_pitch, time]=unsteadyBEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
@@ -111,17 +116,21 @@ ylabel('Power $[W]$','interpreter','latex',  'FontSize', 12)
 figure; 
 plot(time, radtodeg(Theta_pitch))
 xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
-ylabel('Theta pitch $[º]$','interpreter','latex',  'FontSize', 12)
+ylabel('Theta pitch $[deg]$','interpreter','latex',  'FontSize', 12)
 
 figure;
 plot(time, omega)
 xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
 ylabel('$\omega$','interpreter','latex',  'FontSize', 12)
 %% Question 3
-V_0=7;
+V_0=15;
 [thrust, Power, Maero, omega, Theta_pitch, time, u_turb9]=TURB_BEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);
 
 %% plots
+figure;
+plot(time, V_0+u_turb9)
+xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
+ylabel('Wind speed $[W]$','interpreter','latex',  'FontSize', 12)
 
 figure;
 plot(time(1:end-1), Power)
@@ -131,7 +140,7 @@ ylabel('Power $[W]$','interpreter','latex',  'FontSize', 12)
 figure; 
 plot(time, radtodeg(Theta_pitch))
 xlabel('time $[s]$','interpreter','latex',  'FontSize', 12)
-ylabel('Theta pitch $[º]$','interpreter','latex',  'FontSize', 12)
+ylabel('Theta pitch $[deg]$','interpreter','latex',  'FontSize', 12)
 
 figure;
 plot(time, omega)

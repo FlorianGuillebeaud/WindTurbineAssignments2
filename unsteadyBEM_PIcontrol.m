@@ -1,11 +1,11 @@
 function [thrust, Power, Maero, omega, Theta_pitch, time]=unsteadyBEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor)
 %Initialization 
 global W3_100 W3_60 W3_48 W3_36 W3_30 W3_24 blade_data M_G omega_list
-Theta_pitch_i(1)=0;
+Theta_pitch_i(1)=Theta_pitch0;
 Theta_pitch(1) = Theta_pitch0; % [rad]
 
 omega_max=deg2rad(8); %rad/s
-omega_ref=1.01; %rad/s
+omega_ref=1.08; %rad/s
 
 omega(1) = omega0 ;
 

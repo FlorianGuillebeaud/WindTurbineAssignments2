@@ -2,11 +2,14 @@ function [Thrust, Power, Maero, omega, Theta_pitch, time,u_turb9]=TURB_BEM_PIcon
 %% Read the binary files
 % WE NEED TO HAVE DIFFERENT FILES FOR EACH VELOCITY
 if V_0==15
-    fid1=fopen('sim1.bin');% (fluctuating u component)
+    fid1=fopen('simV015.bin');% (fluctuating u component)
+    n1=16384;
 elseif V_0==7
-    fid1=fopen('sim1.bin');
+    fid1=fopen('simV07.bin');
+    n1=16384;
 elseif V_0==8
-    fid1=fopen('sim1.bin');
+    fid1=fopen('simV08.bin');
+    n1=8192;
 else
     fprintf('No file for this wind velocity \n')
 end
@@ -14,7 +17,7 @@ end
 % fid2=fopen('sim2.bin'); % (fluctuating v component)
 % fid3=fopen('sim3.bin'); % (fluctuating w component)
 global u
-n1=8192;
+
 n2=32;
 n3=32;
 uraw=fread(fid1,'single');

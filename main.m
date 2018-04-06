@@ -85,7 +85,7 @@ Kk=deg2rad(14);
 Irotor=1.6*10^8; %kg.m²
 
 omega0=0.7;
-Theta_pitch0=deg2rad(25);
+Theta_pitch0=deg2rad(5);
 
 %/!\ every angles have to be in rad, except in blade_data
 [thrust, Power, Maero, omega, Theta_pitch, time]=unsteadyBEM_PIcontrol(H, Ls, R, B, omega0, V_0, rho, delta_t, N, N_element, Theta_pitch0, Theta_cone, Theta_tilt, Theta_yaw, Kk, Ki, Kp, Irotor);

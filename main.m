@@ -49,22 +49,24 @@ V_0 = 7 ; % [m/s] Constant wind speed
 omega = lambda*V_0/R ; % [rad/s] Constant rotational speed
 
 %[~, Power, ~,~]=unsteadyBEM(H, Ls, R, B, omega, V_0, rho, delta_t, N, N_element, Theta_pitch, Theta_cone, Theta_tilt, Theta_yaw);
-
-
 %Cp7=Power(end)/(0.5*rho*V_0^3*A);
 Cp7=0.4316;
 
 
 omega_list=linspace(0,3,100);
-M_G=0.5*rho*A*R^3*Cp7.*omega_list.^2./lambda^3;
+k = 0.5*rho*A*R^3*Cp7/lambda^3;
+M_G=k*omega_list.^2;
 P=M_G.*omega_list;
 P_rated=10.64*10^6;
+omega_r = (P_rated/k)^(1/3) ; 
+Mg_rated = k*omega_r^2;
 for i=1:length(P)
     if P(i)>P_rated
         P(i)=P_rated;
-        M_G(i)=P(i)/omega_list(i);
+        M_G(i)=Mg_rated;
     end
 end
+
 %% Plot
 figure(1)
 plot(omega_list,M_G)
